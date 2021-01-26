@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    .movie_items li {
+      list-style-type: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>Movie List</h2>
+
+<div id="app">
+	<!-- <div class="movie">
+
+	<div class="movie-image">
+		<img v-bind:src="image"> 
+	</div> -->
+<ul class="movie_items">
+  <!-- <li class="movie_item">
+    <div class="movie_image">
+      <img v-bind:src="image">
+    </div>
+    <div class="movie_name">
+      <p>{{movieName}}</p>
+    </div>
+  </li> -->
+  <movie-item>
+  </movie-item>
+
+</ul>
+  
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+<script>
+
+Vue.component('movie-item', {
+  // data: function() {
+  //     return {
+  //         heading: 'Some Component'
+  //     };
+  //   },
+  props: ['item'],
+  template: '#movie-item'
+});
+
+
+// Send Ajax Call to http://omdbapi.com/
+jQuery.ajax({
+  url: 'http://omdbapi.com/',
+  data: {
+    s: 'Harry Potter',
+    page: '1',
+    apikey: 'e0620bd4'
+  },
+  success: function(response) {
+    // console.log('data');
+    // console.log(response);
+    let result = response.Search;
+    let html, movieList = '';
+    // console.log(result[0]);
+    // console.log(typeof result);
+    result.forEach(function(item, index){
+      // console.log(item);
+      // console.log(item.Title);
+      // console.log(item.Poster);
+      // html = '<movie-item imageSrc="' + item.Poster + '" title="' + item.Title + '"></movie-item>';
+      html = '<movie-item item="' + item + '"></movie-item>';
+      movieList = Vue.compile(html);
+      console.log(movieList.render());
+
+    });
+    // console.log('dta > wdm');
+    // var res = Vue.compile(html);
+  },
+});
+
+
+
+///////
+
+var app = new Vue({
+  el: '#app',
+  data: {
+   movieName: 'Learn JavaScript',
+   image:'https://1.bp.blogspot.com/-539GzkFU4Dg/X7dbX_RxNeI/AAAAAAAAInA/Tmmh4v5DQaIvl4nGtMhW8QczjdfO7mNIgCLcBGAsYHQ/s16000/IDFC%2BFIRST%2BBANK.jpg'
+   }
+})
+</script>
+
+<script id="movie-item" type="text/x-template">
+  <li class="movie_item">
+    <div class="movie_image">
+      <img v-bind:src="item.Poster">
+    </div>
+    <div class="movie_name">
+      <p>{{item.Title}}</p>
+    </div>
+  </li>
+</script>
+
+</body>
+</html>
